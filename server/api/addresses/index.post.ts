@@ -1,14 +1,15 @@
 export default defineEventHandler(async (event) => {
-  const newData = await readBody(event);
+  const newAddress = await readBody(event);
 
-  async function postNewData() {
+  async function addNewAddress() {
     try {
-      await knexInstance.insert(newData).into("addresses");
+      await knexInstance.insert(newAddress).into("addresses");
     } catch (err) {
       throw new Error((err as Error).message);
     }
     return await knexInstance("addresses").select();
   }
 
-  return postNewData();
+  addNewAddress();
+  return { success: true };
 });
