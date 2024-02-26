@@ -8,7 +8,7 @@
     "devh": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare && node createdb.js"
   },
   "dependencies": {
     "better-sqlite3": "^9.4.3",

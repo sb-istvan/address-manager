@@ -24,6 +24,8 @@ logs
 !.env.example
 
 # SQLite
+database
+*.sqlite
 *.sqlite-shm
 *.sqlite-wal
 *.sqbpro
