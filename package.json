@@ -11,6 +11,8 @@
     "postinstall": "nuxt prepare && node createdb.js"
   },
   "dependencies": {
+    "@vee-validate/nuxt": "^4.12.5",
+    "@vee-validate/zod": "^4.12.5",
     "better-sqlite3": "^9.4.3",
     "knex": "^3.1.0",
     "nuxt": "^3.10.2",

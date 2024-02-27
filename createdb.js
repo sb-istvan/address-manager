@@ -1,5 +1,6 @@
 import knex from "knex";
 import fs from "node:fs";
+import { exit } from "node:process";
 
 const knexInstance = knex({
   client: "better-sqlite3",
@@ -10,10 +11,10 @@ const knexInstance = knex({
 });
 
 const initAddress = {
-  name: "Első Vásárló",
-  street: "Valamelyik u. 11.",
-  city: "Szomszédváros",
-  zipCode: 5511,
+  billingName: "Első Vásárló",
+  billingStreet: "Valamelyik u. 11.",
+  billingCity: "Szomszédváros",
+  billingZipCode: 5511,
   deliveryName: "Ide Kérem",
   deliveryStreet: "Kiszállítós utca 54.",
   deliveryCity: "Szállítóhely",
@@ -26,12 +27,13 @@ if (!fs.existsSync("database")) {
 
 await knexInstance.schema.hasTable("addresses").then((exists) => {
   if (!exists) {
+    console.log("creating address table...");
     return knexInstance.schema.createTable("addresses", (table) => {
       table.increments("id").primary();
-      table.string("name", 30);
-      table.string("street", 30);
-      table.integer("zipCode");
-      table.string("city", 20);
+      table.string("billingName", 30);
+      table.string("billingStreet", 30);
+      table.integer("billingZipCode");
+      table.string("billingCity", 20);
       table.string("deliveryName", 30);
       table.string("deliveryStreet", 30);
       table.integer("deliveryZipCode");
@@ -41,3 +43,4 @@ await knexInstance.schema.hasTable("addresses").then((exists) => {
 });
 
 await knexInstance.insert(initAddress).into("addresses");
+exit(0);

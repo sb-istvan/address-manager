@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: ["nuxt-primevue"],
+  modules: ["nuxt-primevue", "@vee-validate/nuxt"],
   primevue: {
     options: {
       ripple: true,
@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     components: {
       include: [
         "InputText",
+        "InputNumber",
         "FloatLabel",
         "Checkbox",
         "Button",
