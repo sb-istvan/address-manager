@@ -3,17 +3,26 @@ import { z } from "zod";
 
 const schema = toTypedSchema(
   z.object({
-    billingName: z.string().min(5, "Required"),
-    billingStreet: z.string().min(10, "Required"),
-    billingZipCode: z.number().min(4, "Required"),
-    billingCity: z.string().min(3, "Required"),
-    deliveryName: z.string().min(5, "Required"),
-    deliveryStreet: z.string().min(10, "Required"),
-    deliveryZipCode: z.number().min(4, "Required"),
-    deliveryCity: z.string().min(3, "Required"),
+    billingName: z.string().min(5, "Required field"),
+    billingStreet: z.string().min(10, "Required field"),
+    billingZipCode: z.number().min(4, "Required field"),
+    billingCity: z.string().min(3, "Required field"),
+    deliveryName: z
+      .string()
+      .min(5, "Required field")
+      .default("Kiszállítási név"),
+    deliveryStreet: z
+      .string()
+      .min(10, "Required field")
+      .default("Kiszállítási u. 1."),
+    deliveryZipCode: z.number().min(4, "Required field").default(9888),
+    deliveryCity: z
+      .string()
+      .min(3, "Required field")
+      .default("Kiszállítóváros"),
   })
 );
-const { values, errors, defineField, handleSubmit } = useForm({
+const { errors, defineField, handleSubmit } = useForm({
   validationSchema: schema,
 });
 
@@ -29,42 +38,27 @@ const [deliveryCity, deliveryCityAttrs] = defineField("deliveryCity");
 const { data: addressList, refresh } = await useFetch("/api/addresses");
 const sameDeliveryAddress = ref(false);
 
-// @TODO: fix "same delivery address" checkbox function
-//
-// const formDataBilling = computed(() => ({
-//   billingName: values.billingName,
-//   billingStreet: values.billingStreet,
-//   billingCity: values.billingCity,
-//   billingZipCode: values.billingZipCode,
-// }));
-
-// const formDataDelivery = ref({
-//   deliveryName: values.deliveryName,
-//   deliveryStreet: values.deliveryStreet,
-//   deliveryCity: values.deliveryCity,
-//   deliveryZipCode: values.deliveryZipCode,
-// });
-
-// const formDataDeliveryStash = ref({ ...formDataDelivery.value });
-
-// function toggleSameDeliveryAddress() {
-//   if (sameDeliveryAddress.value) {
-//     formDataDelivery.value = formDataDeliveryStash.value;
-//   } else {
-//     formDataDelivery.value = {
-//       deliveryName: values.deliveryName,
-//       deliveryStreet: values.deliveryStreet,
-//       deliveryCity: values.deliveryCity,
-//       deliveryZipCode: values.deliveryZipCode,
-//     };
-//   }
-// }
-
 const addNewRow = handleSubmit(async (values) => {
-  await $fetch("/api/addresses", {
-    method: "post",
-    body: values,
-  });
+  if (!sameDeliveryAddress.value) {
+    await $fetch("/api/addresses", {
+      method: "post",
+      body: values,
+    });
+  } else {
+    await $fetch("/api/addresses", {
+      method: "post",
+      body: {
+        billingName: values.billingName,
+        billingStreet: values.billingStreet,
+        billingZipCode: values.billingZipCode,
+        billingCity: values.billingCity,
+        deliveryName: values.billingName,
+        deliveryStreet: values.billingStreet,
+        deliveryZipCode: values.billingZipCode,
+        deliveryCity: values.billingCity,
+      },
+    });
+  }
   refresh();
 });
 </script>
@@ -78,47 +72,46 @@ const addNewRow = handleSubmit(async (values) => {
         <div class="new-address-container">
           <div class="new-address-type-section">
             <h3>Billing address</h3>
-            <FloatLabel>
-              <InputText
-                id="billingName"
-                v-model="billingName"
-                v-bind="billingNameAttrs"
-                :invalid="errors.billingName" />
-              <label for="billingName">Full name</label>
-            </FloatLabel>
+
+            <label for="billingName">Full name</label>
+            <InputText
+              id="billingName"
+              v-model="billingName"
+              v-bind="billingNameAttrs"
+              :invalid="errors.billingName" />
             <p v-if="errors.billingName" class="p-error">
               {{ errors.billingName }}
             </p>
-            <FloatLabel>
-              <InputText
-                id="billingStreet"
-                v-model="billingStreet"
-                v-bind="billingStreetAttrs" />
-              <label for="billingStreet">Street and house number</label>
-            </FloatLabel>
+
+            <label for="billingStreet">Street and house number</label>
+            <InputText
+              id="billingStreet"
+              v-model="billingStreet"
+              v-bind="billingStreetAttrs"
+              :invalid="errors.billingStreet" />
             <p v-if="errors.billingStreet" class="p-error">
               {{ errors.billingStreet }}
             </p>
-            <FloatLabel>
-              <InputNumber
-                id="billingZipCode"
-                v-model="billingZipCode"
-                v-bind="billingZipCodeAttrs"
-                :useGrouping="false"
-                :min="1000"
-                :max="9999" />
-              <label for="billingZipCode">Zip code</label>
-            </FloatLabel>
+
+            <label for="billingZipCode">Zip code</label>
+            <InputNumber
+              id="billingZipCode"
+              v-model="billingZipCode"
+              v-bind="billingZipCodeAttrs"
+              :invalid="errors.billingZipCode"
+              :useGrouping="false"
+              :min="1000"
+              :max="9999" />
             <p v-if="errors.billingZipCode" class="p-error">
               {{ errors.billingZipCode }}
             </p>
-            <FloatLabel>
-              <InputText
-                id="billingCity"
-                v-model="billingCity"
-                v-bind="billingCityAttrs" />
-              <label for="billingCity">City</label>
-            </FloatLabel>
+
+            <label for="billingCity">City</label>
+            <InputText
+              id="billingCity"
+              v-model="billingCity"
+              v-bind="billingCityAttrs"
+              :invalid="errors.billingCity" />
             <p v-if="errors.billingCity" class="p-error">
               {{ errors.billingCity }}
             </p>
@@ -126,60 +119,90 @@ const addNewRow = handleSubmit(async (values) => {
           <div class="new-address-type-section">
             <h3>Delivery address</h3>
             <div>
-              <Checkbox
-                binary
-                variant="filled"
-                v-model="sameDeliveryAddress"
-                @click="toggleSameDeliveryAddress"
-                id="sameDeliveryAddress" />
-              <label for="sameDeliveryAddress"> Same as Billing address</label>
+              <label for="sameDeliveryAddress">
+                <Checkbox
+                  binary
+                  variant="filled"
+                  v-model="sameDeliveryAddress"
+                  id="sameDeliveryAddress" />
+                Same as Billing address</label
+              >
             </div>
 
-            <FloatLabel>
-              <InputText
-                id="deliveryName"
-                v-model="deliveryName"
-                v-bind="deliveryNameAttrs"
-                :invalid="errors.deliveryName"
-                :disabled="sameDeliveryAddress" />
-              <label for="deliveryName">Full name</label>
-            </FloatLabel>
+            <label for="deliveryName">Full name</label>
+            <InputText
+              v-if="!sameDeliveryAddress"
+              id="deliveryName"
+              v-model="deliveryName"
+              v-bind="deliveryNameAttrs"
+              :invalid="errors.deliveryName" />
+            <InputText
+              v-else
+              id="deliveryName"
+              v-model="billingName"
+              v-bind="billingNameAttrs"
+              :modelValue="billingName"
+              :invalid="errors.billingStreet"
+              disabled />
             <p v-if="errors.deliveryName" class="p-error">
               {{ errors.deliveryName }}
             </p>
-            <FloatLabel>
-              <InputText
-                id="deliveryStreet"
-                v-model="deliveryStreet"
-                v-bind="deliveryStreetAttrs"
-                :disabled="sameDeliveryAddress" />
-              <label for="deliveryStreet">Street and house number</label>
-            </FloatLabel>
+
+            <label for="deliveryStreet">Street and house number</label>
+            <InputText
+              v-if="!sameDeliveryAddress"
+              id="deliveryName"
+              v-model="deliveryStreet"
+              v-bind="deliveryStreetAttrs"
+              :invalid="errors.deliveryStreet" />
+            <InputText
+              v-else
+              id="deliveryName"
+              v-model="billingStreet"
+              v-bind="billingStreetAttrs"
+              :invalid="errors.billingStreet"
+              disabled />
             <p v-if="errors.deliveryStreet" class="p-error">
               {{ errors.deliveryStreet }}
             </p>
-            <FloatLabel>
-              <InputNumber
-                id="deliveryZipCode"
-                v-model="deliveryZipCode"
-                v-bind="deliveryZipCodeAttrs"
-                :disabled="sameDeliveryAddress"
-                :useGrouping="false"
-                :min="1000"
-                :max="9999" />
-              <label for="deliveryZipCode">Zip code</label>
-            </FloatLabel>
+
+            <label for="deliveryZipCode">Zip code</label>
+            <InputNumber
+              v-if="!sameDeliveryAddress"
+              id="deliveryZipCode"
+              v-model="deliveryZipCode"
+              v-bind="deliveryZipCodeAttrs"
+              :invalid="errors.deliveryZipCode"
+              :disabled="sameDeliveryAddress"
+              :useGrouping="false"
+              :min="1000"
+              :max="9999" />
+            <InputNumber
+              v-else
+              id="deliveryZipCode"
+              v-model="billingZipCode"
+              v-bind="billingZipCodeAttrs"
+              :invalid="errors.billingZipCode"
+              disabled
+              :useGrouping="false" />
             <p v-if="errors.deliveryZipCode" class="p-error">
               {{ errors.deliveryZipCode }}
             </p>
-            <FloatLabel>
-              <InputText
-                id="deliveryCity"
-                v-model="deliveryCity"
-                v-bind="deliveryCityAttrs"
-                :disabled="sameDeliveryAddress" />
-              <label for="deliveryCity">City</label>
-            </FloatLabel>
+
+            <label for="deliveryCity">City</label>
+            <InputText
+              v-if="!sameDeliveryAddress"
+              id="deliveryName"
+              v-model="deliveryCity"
+              v-bind="deliveryCityAttrs"
+              :invalid="errors.deliveryCity" />
+            <InputText
+              v-else
+              id="deliveryName"
+              v-model="billingCity"
+              v-bind="billingCityAttrs"
+              :invalid="errors.billingCity"
+              disabled />
             <p v-if="errors.deliveryCity" class="p-error">
               {{ errors.deliveryCity }}
             </p>
@@ -239,12 +262,12 @@ h3 {
   gap: 1rem;
 }
 
-.p-float-label {
-  margin-top: 1.25rem;
-}
-
 .p-error {
   margin-block: -0.5rem;
   margin-left: 0.75rem;
+}
+
+.p-label {
+  margin-left: 5rem;
 }
 </style>

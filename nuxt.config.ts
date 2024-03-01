@@ -17,7 +17,6 @@ export default defineNuxtConfig({
       include: [
         "InputText",
         "InputNumber",
-        "FloatLabel",
         "Checkbox",
         "Button",
         "DataTable",

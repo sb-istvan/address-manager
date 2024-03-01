@@ -15,12 +15,12 @@
     "@vee-validate/zod": "^4.12.5",
     "better-sqlite3": "^9.4.3",
     "knex": "^3.1.0",
-    "nuxt": "^3.10.2",
     "primevue": "^3.48.1",
     "vue": "^3.4.19",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "nuxt": "^3.10.3",
     "nuxt-primevue": "^0.3.0"
   }
 }
