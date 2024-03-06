@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: ["nuxt-primevue", "@vee-validate/nuxt"],
+  modules: ["nuxt-primevue", "@vee-validate/nuxt", "@sidebase/nuxt-auth"],
   primevue: {
     options: {
       ripple: true,
@@ -25,4 +25,5 @@ export default defineNuxtConfig({
       ],
     },
   },
+  auth: { globalAppMiddleware: true },
 });

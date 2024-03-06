@@ -1,5 +1,7 @@
 <template>
-  <MainPage />
+  <div>
+    <NuxtPage />
+  </div>
 </template>
 
 <script>
