@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { status, data, signIn, signOut } = useAuth();
+const { status, data, signOut } = useAuth();
 </script>
 
 <template>
@@ -7,10 +7,10 @@ const { status, data, signIn, signOut } = useAuth();
     <h1>Address Manager</h1>
     <div class="authentication">
       <template v-if="status === 'authenticated'">
-        <p>Logged in as {{ data?.user?.name }}</p>
+        <p>Signed in as {{ data?.user?.name }}</p>
         <Button @click="signOut({ callbackUrl: '/' })">Sign Out</Button>
       </template>
-      <p v-else>Not logged in – <nuxt-link to="/login">Sign In</nuxt-link></p>
+      <p v-else>Not signed in – <nuxt-link to="/login">Sign In</nuxt-link></p>
     </div>
   </header>
   <nav>
@@ -33,6 +33,6 @@ header {
 }
 
 .authentication {
-  gap: 0.375rem;
+  gap: 1rem;
 }
 </style>

@@ -3,10 +3,10 @@ import { z } from "zod";
 
 const schema = toTypedSchema(
   z.object({
-    billingName: z.string().min(5, "Required field"),
-    billingStreet: z.string().min(10, "Required field"),
-    billingZipCode: z.number().min(4, "Required field"),
-    billingCity: z.string().min(3, "Required field"),
+    billingName: z.string().min(5, "Required field").default("Negyedik Teszt"),
+    billingStreet: z.string().min(10, "Required field").default("Másik u. 34."),
+    billingZipCode: z.number().min(4, "Required field").default(5656),
+    billingCity: z.string().min(3, "Required field").default("Tesztváros"),
     deliveryName: z
       .string()
       .min(5, "Required field")
@@ -115,7 +115,6 @@ const addNewRow = handleSubmit(async (values) => {
         <div class="new-address-type-section">
           <div class="deliveryoption">
             <h3>Delivery address</h3>
-
             <label for="sameDeliveryAddress">
               <Checkbox
                 binary
@@ -215,6 +214,7 @@ const addNewRow = handleSubmit(async (values) => {
   display: flex;
   flex-direction: row;
   gap: 3rem;
+  flex-wrap: wrap;
 }
 
 .new-address-type-section {
@@ -225,14 +225,10 @@ const addNewRow = handleSubmit(async (values) => {
   padding-bottom: 0.5rem;
 }
 
-h3 {
-  margin-top: 0.5rem;
-  margin-bottom: 0rem;
-}
-
-.header-delivery {
+.deliveryoption {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
@@ -243,10 +239,5 @@ h3 {
 
 .p-label {
   margin-left: 5rem;
-}
-
-.deliveryoption {
-  display: flex;
-  gap: 1rem;
 }
 </style>

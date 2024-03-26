@@ -9,7 +9,6 @@ export default defineEventHandler(async (event) => {
     } catch (err) {
       throw new Error((err as Error).message);
     }
-    return await knexInstance("addresses").select();
   }
 
   addNewAddress();

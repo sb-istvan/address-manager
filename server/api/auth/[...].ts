@@ -1,35 +1,15 @@
-// file: ~/server/api/auth/[...].ts
 import { NuxtAuthHandler } from "#auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export default NuxtAuthHandler({
-  pages: { singIn: "/login" },
+  pages: { signIn: "/login" },
   providers: [
-    // @ts-expect-error You need to use .default here for it to work during SSR. May be fixed via Vite at some point
-    // GithubProvider.default({
-    //   clientId: "",
-    //   clientSecret: "",
-    // }),
+    GithubProvider.default({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
     CredentialsProvider.default({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: "Credentials",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
-      credentials: {
-        username: {
-          label: "Username",
-          type: "text",
-          placeholder: "(hint: address-admin)",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-          placeholder: "(hint: addnew2)",
-        },
-      },
       authorize(credentials: any) {
         console.warn(
           "ATTENTION: You should replace this with your real providers or credential provider logic! The current setup is not safe"
@@ -39,7 +19,7 @@ export default NuxtAuthHandler({
         // that is false/null if the credentials are invalid.
         // NOTE: THE BELOW LOGIC IS NOT SAFE OR PROPER FOR AUTHENTICATION!
 
-        const user = {
+        const mockUser = {
           id: "1",
           name: "Address Administrator",
           username: "address-admin",
@@ -47,8 +27,8 @@ export default NuxtAuthHandler({
         };
 
         if (
-          credentials?.username === user.username &&
-          credentials?.password === user.password
+          credentials?.username === mockUser.username &&
+          credentials?.password === mockUser.password
         ) {
           // Any object returned will be saved in `user` property of the JWT
           return user;

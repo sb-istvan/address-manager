@@ -11,9 +11,3 @@ definePageMeta({
   <Header />
   <LoginForm />
 </template>
-
-<style>
-body {
-  margin-inline: 1rem;
-}
-</style>

@@ -1,6 +1,5 @@
 <script setup>
-const { status, data, signIn, signOut } = useAuth();
-const { data: addresses, refresh } = await useFetch("/api/addresses");
+const { data: addresses } = await useFetch("/api/addresses");
 </script>
 
 <template>
