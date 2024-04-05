@@ -5,9 +5,14 @@ This is a practice project for managing billing and delivery addresses of an ima
 On the home page all addresses are visible.
 Adding new address is possible only after logging in. This is either possible via GitHub login or with username + password combination.
 
-For the user interface elements, PrimeVue is used as a UI kit.
-The addresses are stored in a SQLite database. Queries are handled with Knex.
-Authentication is implemented with Sidebase Nuxt Auth.
+Technologies:
+
+- JS framework: Vue.js + Nuxt
+- UI kit: PrimeVue
+- Database: SQLite
+- ORM: Knex
+- Authentication: Sidebase Nuxt Auth
+- Search: Fuse.js
 
 ## Setup
 
@@ -39,11 +44,11 @@ Password: addnew2
 
 Planned in this order:
 
-- Search function
-- Proper navbar
-- Pagination for the List of addresses
-- Address deleting function
-- Address editing function
-- Using Prisma instead of Knex
-- Signup function
-- Deploying to a server
+☑ Search function  
+☐ Proper navbar  
+☐ Pagination for the List of addresses  
+☐ Address deleting function  
+☐ Address editing function  
+☐ Using Prisma instead of Knex  
+☐ Signup function  
+☐ Deploying to a server

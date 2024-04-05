@@ -17,6 +17,8 @@ export default defineNuxtConfig({
       include: [
         "InputText",
         "InputNumber",
+        "IconField",
+        "InputIcon",
         "Checkbox",
         "Button",
         "DataTable",

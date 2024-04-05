@@ -31,7 +31,7 @@ export default NuxtAuthHandler({
           credentials?.password === mockUser.password
         ) {
           // Any object returned will be saved in `user` property of the JWT
-          return user;
+          return mockUser;
         } else {
           console.error(
             "Warning: Malicious login attempt registered, bad credentials provided"
