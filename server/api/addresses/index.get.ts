@@ -1,11 +1,11 @@
-import { Addresses } from "~/types/types";
+import { Address } from "~/types/types";
 
 export default defineEventHandler(() => {
-  let addresses = <Addresses[]>[];
+  let addresses = <Address[]>[];
 
   async function getData() {
     try {
-      const data = await knexInstance<Addresses>("addresses").select();
+      const data = await knexInstance<Address>("addresses").select();
       addresses = data;
       return addresses;
     } catch (err) {

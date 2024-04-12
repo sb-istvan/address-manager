@@ -3,7 +3,7 @@
 This is a practice project for managing billing and delivery addresses of an imaginary webshop.
 
 On the home page all addresses are visible.
-Adding new address is possible only after logging in. This is either possible via GitHub login or with username + password combination.
+Adding new address and deleting rows are possible only after logging in. This is either possible via GitHub login or with username + password combination.
 
 Technologies:
 
@@ -46,8 +46,8 @@ Planned in this order:
 
 ☑ Search function  
 ☐ Proper navbar  
-☐ Pagination for the List of addresses  
-☐ Address deleting function  
+☑ Pagination for the List of addresses  
+☑ Address deleting function  
 ☐ Address editing function  
 ☐ Using Prisma instead of Knex  
 ☐ Signup function  
